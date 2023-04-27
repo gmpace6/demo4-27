@@ -1,5 +1,6 @@
 console.log('connected')
 
+// Step 1: Add the HTML
 const getAllBtn = document.querySelector('#all')
 const charBtns = document.querySelectorAll('.char-btns')
 const ageForm = document.querySelector('#age-form')
@@ -12,8 +13,9 @@ const newAgeInput = document.querySelector('#age')
 const newLikesText = document.querySelector('textarea')
 const charContainer = document.querySelector('section')
 
-// const baseURL = 
+const baseURL = "https://local host:4000"
 
+// Step 2: Create callback function
 function createCharacterCard(char) {
   let charCard = document.createElement('div')
   charCard.innerHTML = `<h3>${char.firstName} ${char.lastName}</h3>
@@ -31,3 +33,14 @@ function createCharacterCard(char) {
 function clearCharacters() {
   charContainer.innerHTML = ``
 }
+
+// Create a function that will send axios.get request
+function getAllChars(){
+  axios.get(`${baseURL}/characters`)
+  .then((response) => {
+    console.log(response)
+  })
+}
+
+// Step 3: Add Event Listener
+getAllBtn.addEventListener('click', getAllChars )
