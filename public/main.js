@@ -59,6 +59,57 @@ console.log(err)
 })
 }
 
+// Create a function that will run axios request with Query String
+function getOldChars(event){
+  event.preventDefault()
+
+  clearCharacters()
+
+  axios.get(`${baseURL}/character/?age=${ageInput.value}`)
+  .then((res) => {
+    console.log(res.data)
+    for(let i = 0; i < res.data.length; i++){
+      createCharacterCard(res.data[i])
+    }
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+}
+
+// Create a new character
+function createNewChar(e){
+  e.preventDefault()
+
+let newLikes = [...newLikesText.value.split(',')]
+// ['eat', 'run', 'play']
+
+let body = {
+  firstName: newFirstInput.value,
+  lastName: newLastInput.value,
+  gender: newGenderDropDown.value,
+  age: newAgeInput.value,
+  likes: newLikes
+}
+
+axios.post(`${baseURL}/character`, body)
+.then((res) => {
+console.log(res)
+for (let i = 0; i < res.data.length; i++){
+  createCharacterCard(res.data[i])
+}
+})
+.catch((err) => {
+  console.log(err)
+})
+
+newFirstInput.value = ''
+newLastInput.value = ''
+newGenderDropDown.value = ''
+newAgeInput.value = ''
+newLikesText.value = ''
+}
+
 // Step 3: Add Event Listener
 getAllBtn.addEventListener('click', getAllChars )
 
@@ -66,3 +117,7 @@ getAllBtn.addEventListener('click', getAllChars )
 for(let i = 0; i < charBtns.length; i++){
   charBtns[i].addEventListener('click',getOneChar)
 }
+
+ageForm.addEventListener("submit", getOldChars)
+
+createForm.addEventListener("submit", createNewChar)
