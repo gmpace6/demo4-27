@@ -13,7 +13,7 @@ const newAgeInput = document.querySelector('#age')
 const newLikesText = document.querySelector('textarea')
 const charContainer = document.querySelector('section')
 
-const baseURL = "https://local host:4000"
+const baseURL = "http://localhost:4000"
 
 // Step 2: Create callback function
 function createCharacterCard(char) {
@@ -36,11 +36,33 @@ function clearCharacters() {
 
 // Create a function that will send axios.get request
 function getAllChars(){
+  clearCharacters()
   axios.get(`${baseURL}/characters`)
   .then((response) => {
-    console.log(response)
+    console.log(response.data)
+for (let i = 0; i < response.data.length; i++){
+  createCharacterCard(response.data[i])
+    }
   })
+}
+
+// Create a function that will run axios.get with route Param
+function getOneChar(event){
+  clearCharacters()
+axios.get(`${baseURL}/character/${event.target.id}`)
+.then((res) => {
+  console.log(res)
+  createCharacterCard(res.data)
+})
+.catch((err) => {
+console.log(err)
+})
 }
 
 // Step 3: Add Event Listener
 getAllBtn.addEventListener('click', getAllChars )
+
+// Add indiv CharBtns
+for(let i = 0; i < charBtns.length; i++){
+  charBtns[i].addEventListener('click',getOneChar)
+}
